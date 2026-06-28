@@ -1,0 +1,4 @@
+name=pkgtest
+version=v0.0.0
+source=https://frothy7650.org/pub/packages/linux/pkgtest.simpkg
+platform=linux

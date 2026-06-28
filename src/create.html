@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New package</title>
+    <link href="/styles.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <main class="container">
+      <div class="page-header" style="text-align: center;">
+        <h1>New package</h1>
+      </div>
+
+      <div class="card">
+        <h2>Add a package</h2>
+        <p>All fields are required</p>
+
+        <form method="post" action="/create">
+          <input name="name" placeholder="best-package-ever" required>
+          <input name="version" placeholder="v1.2.3" required>
+          <input name="source" placeholder="https://foo.com/best-package-ever.simpkg" required>
+          <select name="platform" required>
+            <option value="" disabled selected>Select platform</option>
+            <option value="linux">Linux</option>
+            <option value="windows">Windows</option>
+          </select>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+
+    </main>
+  </body>
+</html>

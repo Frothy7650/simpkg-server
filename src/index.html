@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Packages</title>
+    <link href="/styles.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <main class="container">
+      <div class="page-header">
+        <h1>Packages</h1>
+        <button type="button" onclick="window.location='/create'">+ Add New</button>
+      </div>
+
+      <div class="packages">
+        @for package in packages
+          <a class="package" href="@package.source">
+            <span class="name">@package.name</span>
+            <span class="platform">@package.platform</span>
+            <span class="version">@package.version</span>
+          </a>
+        @end
+      </div>
+    </main>
+  </body>
+</html>
