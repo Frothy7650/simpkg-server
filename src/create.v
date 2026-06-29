@@ -1,5 +1,6 @@
 module main
 
+import crypto.sha256
 import veb
 import os
 
@@ -18,11 +19,9 @@ pub fn (mut app App) new_post(mut ctx Context) veb.Result {
   source :=
     ctx.form['source'] or { return ctx.text('getting source failed') }.trim_space()
 
-  if app.authkey != '' {
-    authkey := ctx.form['authkey'] or { return ctx.text('getting authkey failed') }.trim_space()
-    if authkey != app.authkey { return ctx.text('invalid authkey') }
-    println('LOG: authkey passed')
-  }
+  authkey := ctx.form['authkey'] or { return ctx.text('getting authkey failed') }.trim_space()
+  if sha256.hexhash(authkey) !in app.authkeys { return ctx.text('invalid authkey') }
+  println('LOG: authkey passed')
 
   platform_str := ctx.form['platform'] or { return ctx.text('getting platform failed') }.trim_space()
   mut platform := Platform.linux

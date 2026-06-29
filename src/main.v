@@ -21,26 +21,28 @@ pub struct App {
 pub mut:
 	packages shared []Package
 	updated  bool
-  authkey  string
+  authkeys []string
 }
 
 pub struct Context {
 	veb.Context
 }
 
-const pkg_dir = os.join_path(os.getwd(), 'packages')
-
 fn main() {
 	if !os.exists(pkg_dir) || !os.is_dir(pkg_dir) {
 		os.mkdir(pkg_dir)!
 	}
 
-	mut app := &App{
-    updated: false
-    authkey: os.getenv('SIMPKG_AUTH_KEY')
+  if !os.exists(authkeys_path) {
+    os.create(authkeys_path)!
   }
 
-  println('LOG: authkey: ${app.authkey}')
+	mut app := &App{
+    updated: false
+    authkeys: parse_authkeys()!
+  }
+
+  print_setup()
 
   mut package_paths := os.ls(pkg_dir) or { panic(err.msg()) }
   mut packages := []Package{}
@@ -125,4 +127,18 @@ pub fn parse(pkgfile string) !Package {
 	}
 
 	return package
+}
+
+pub fn parse_authkeys() ![]string {
+  mut authkeys := []string{}
+
+  authkeys_raw := os.read_file(authkeys_path)!
+
+  for line in authkeys_raw.split_into_lines() {
+    if line.trim_space() != '' {
+      authkeys << line
+    }
+  }
+
+  return authkeys
 }
