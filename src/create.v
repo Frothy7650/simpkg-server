@@ -18,6 +18,12 @@ pub fn (mut app App) new_post(mut ctx Context) veb.Result {
   source :=
     ctx.form['source'] or { return ctx.text('getting source failed') }.trim_space()
 
+  if app.authkey != '' {
+    authkey := ctx.form['authkey'] or { return ctx.text('getting authkey failed') }.trim_space()
+    if authkey != app.authkey { return ctx.text('invalid authkey') }
+    println('LOG: authkey passed')
+  }
+
   platform_str := ctx.form['platform'] or { return ctx.text('getting platform failed') }.trim_space()
   mut platform := Platform.linux
   platform = match platform_str {
@@ -62,7 +68,7 @@ pub fn (mut app App) new_post(mut ctx Context) veb.Result {
 
 fn valid(name string) bool {
   for c in name {
-    if !(c.is_letter() || c.is_digit() || c == `-` || c == `_`) {
+    if !(c.is_letter() || c.is_digit() || c == `-` || c == `_` || c == `.`) {
       return false
     }
   }

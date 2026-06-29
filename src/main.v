@@ -21,6 +21,7 @@ pub struct App {
 pub mut:
 	packages shared []Package
 	updated  bool
+  authkey  string
 }
 
 pub struct Context {
@@ -36,7 +37,10 @@ fn main() {
 
 	mut app := &App{
     updated: false
+    authkey: os.getenv('SIMPKG_AUTH_KEY')
   }
+
+  println('LOG: authkey: ${app.authkey}')
 
   mut package_paths := os.ls(pkg_dir) or { panic(err.msg()) }
   mut packages := []Package{}
