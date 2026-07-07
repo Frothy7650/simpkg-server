@@ -35,13 +35,13 @@ pub fn (mut app App) new_post(mut ctx Context) veb.Result {
     return ctx.text('name missing')
   }
   if !valid(name) {
-    return ctx.text('invalid package name, only letters, numbers, `-`, and `_` are allowed.')
+    return ctx.text('invalid package name, only letters, numbers, `-`, `:`, `+` and `_` are allowed.')
   }
   if version == '' {
     return ctx.text('version missing')
   }
   if !valid(version) {
-    return ctx.text('invalid package version, only letters, numbers, `-`, and `_` are allowed.')
+    return ctx.text('invalid package version, only letters, numbers, `-`, `:`, `+` and `_` are allowed.')
   }
   if source == '' {
     return ctx.text('source missing')
