@@ -67,7 +67,7 @@ pub fn (mut app App) new_post(mut ctx Context) veb.Result {
 
 fn valid(name string) bool {
   for c in name {
-    if !(c.is_letter() || c.is_digit() || c == `-` || c == `_` || c == `.`) {
+    if !(c.is_letter() || c.is_digit() || c == `-` || c == `_` || c == `.` || c == `:` || c == `+`) {
       return false
     }
   }
