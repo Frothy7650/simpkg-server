@@ -62,7 +62,7 @@ pub fn (mut app App) new_post(mut ctx Context) veb.Result {
     file << 'depends=${pkg}'
   }
 
-  os.write_file(os.join_path(pkg_dir, '${name}-${version}'), file.join_lines()) or {
+  os.write_file(os.join_path(pkg_dir, '${name}-${version}-${platform}'), file.join_lines()) or {
     eprintln('failed to write to file: ${err.msg()}')
     exit(1)
   }
