@@ -10,6 +10,7 @@ pub mut:
 	version string
 	source  string
   platform Platform
+  depends []string
 }
 
 enum Platform {
@@ -116,12 +117,13 @@ pub fn parse(pkgfile string) !Package {
 			'version' { package.version = val }
 			'source' { package.source = val }
       'platform' {
-      match val {
-        'windows' { package.platform = .windows }
-        'linux' { package.platform = .linux }
-        else { return error('invalid platform `${val}`') }
+        match val {
+          'windows' { package.platform = .windows }
+          'linux' { package.platform = .linux }
+          else { return error('invalid platform `${val}`') }
+        }
       }
-    }
+      'depends' { package.depends << val }
 			else { return error('invalid key `${key}`') }
 		}
 	}

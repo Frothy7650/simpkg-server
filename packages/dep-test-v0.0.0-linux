@@ -1,0 +1,5 @@
+name=dep-test
+version=v0.0.0
+source=https://frothy7650.org/pub/packages/linux/dep-test.simpkg
+platform=linux
+depends=test

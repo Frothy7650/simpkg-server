@@ -18,6 +18,7 @@
         <p>All fields are required</p>
 
         <form method="post" action="/create">
+          <label>General</label>
           <input name="name" placeholder="best-package-ever" required>
           <input name="version" placeholder="v1.2.3" required>
           <input name="source" placeholder="https://foo.com/best-package-ever.simpkg" required>
@@ -26,6 +27,16 @@
             <option value="linux">Linux</option>
             <option value="windows">Windows</option>
           </select>
+
+          <label>Dependencies</label>
+          <input id="depends-search" type="text" placeholder="Search packages...">
+
+          <div id="depends-results" class="search-results"></div>
+          <div id="depends-selected" class="selected-list"></div>
+
+          <input type="hidden" id="depends" name="depends">
+
+          <label>Authorization</label>
           <input type="password" name="authkey" placeholder="authkey">
           <button type="submit">Submit</button>
         </form>
@@ -34,3 +45,73 @@
     </main>
   </body>
 </html>
+
+<script>
+const packages = [
+@for pkg in packages
+    "@pkg.name",
+@end
+];
+
+const search = document.getElementById("depends-search");
+const results = document.getElementById("depends-results");
+const selectedDiv = document.getElementById("depends-selected");
+const hidden = document.getElementById("depends");
+
+const selected = [];
+
+function updateHidden() {
+    hidden.value = selected.join(",");
+}
+
+function renderSelected() {
+    selectedDiv.innerHTML = "";
+
+    selected.forEach((pkg, index) => {
+        const tag = document.createElement("button");
+        tag.type = "button";
+        tag.textContent = pkg + " ✕";
+
+        tag.onclick = () => {
+            selected.splice(index, 1);
+            renderSelected();
+            updateHidden();
+        };
+
+        selectedDiv.appendChild(tag);
+    });
+}
+
+function renderResults(filter) {
+    results.innerHTML = "";
+
+    if (!filter)
+        return;
+
+    packages
+        .filter(pkg =>
+            pkg.toLowerCase().includes(filter.toLowerCase()) &&
+            !selected.includes(pkg)
+        )
+        .slice(0, 10)
+        .forEach(pkg => {
+            const div = document.createElement("div");
+            div.textContent = pkg;
+            div.className = "search-result";
+
+            div.onclick = () => {
+                selected.push(pkg);
+                search.value = "";
+                results.innerHTML = "";
+                renderSelected();
+                updateHidden();
+            };
+
+            results.appendChild(div);
+        });
+}
+
+search.addEventListener("input", () => {
+    renderResults(search.value);
+});
+</script>

@@ -6,6 +6,10 @@ import os
 
 @['/create'; GET]
 pub fn (mut app App) new_get(mut ctx Context) veb.Result {
+  mut packages := []Package{}
+	lock app.packages {
+		packages = app.packages.clone()
+	}
 	return $veb.html('create.html')
 }
 
@@ -31,6 +35,8 @@ pub fn (mut app App) new_post(mut ctx Context) veb.Result {
     else { eprintln('ERR: unknown platform from dropdown menu: `${platform_str}`') return ctx.text('internal error with platform') }
   }
 
+  depends := ctx.form['depends'] or { return ctx.text('getting depends failed') }.split(',').map(it.trim_space()).filter(it != '')
+
   if name == '' {
     return ctx.text('name missing')
   }
@@ -52,6 +58,9 @@ pub fn (mut app App) new_post(mut ctx Context) veb.Result {
   file << 'version=${version}'
   file << 'source=${source}'
   file << 'platform=${platform}'
+  for pkg in depends {
+    file << 'depends=${pkg}'
+  }
 
   os.write_file(os.join_path(pkg_dir, '${name}-${version}-${platform}'), file.join_lines()) or {
     eprintln('failed to write to file: ${err.msg()}')

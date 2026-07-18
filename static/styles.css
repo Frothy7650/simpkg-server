@@ -179,3 +179,84 @@ select {
 select:focus {
   border-color: var(--blue);
 }
+
+/* ==========================
+   Dependency selector
+   ========================== */
+
+.search-results {
+  margin-top: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.search-results:empty {
+  display: none;
+}
+
+.search-result {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.12s;
+  user-select: none;
+}
+
+.search-result + .search-result {
+  border-top: 1px solid var(--border);
+}
+
+.search-result:hover {
+  background: rgba(47, 129, 247, 0.18);
+}
+
+.selected-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  min-height: 42px;
+  padding: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.selected-list:empty::before {
+  content: "No dependencies selected";
+  color: var(--muted);
+}
+
+.selected-list button {
+  width: auto;
+  margin: 0;
+  padding: 6px 10px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: var(--blue);
+  color: white;
+  border-radius: 999px;
+
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+
+.selected-list button:hover {
+  background: #4693ff;
+  transform: translateY(-1px);
+}
+
+.selected-list button:active {
+  transform: translateY(0);
+}
+
+#depends-search {
+  margin-bottom: 6px;
+}

@@ -1,5 +1,6 @@
 module main
 
+import frothy7650.dag
 import json
 import veb
 
@@ -33,6 +34,23 @@ pub fn (mut app App) api(mut ctx Context, request string) veb.Result {
       }
 
       json.encode(linux_packages)
+    }
+    'dag' {
+      mut graph := dag.new_graph()
+
+      for pkg in packages {
+        graph.add_node(pkg.name, pkg.version)
+      }
+
+      for pkg in packages {
+        for dep in pkg.depends {
+          graph.add_edge(pkg.name, dep) or {
+            return ctx.text(err.msg())
+          }
+        }
+      }
+
+      graph.to_json()
     }
 		else { 'failed' }
 	}
