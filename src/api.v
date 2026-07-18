@@ -1,7 +1,7 @@
 module main
 
 import frothy7650.dag
-import json
+import json2
 import veb
 
 @['/api/:request']
@@ -12,7 +12,7 @@ pub fn (mut app App) api(mut ctx Context, request string) veb.Result {
 	}
 
 	ret := match request {
-		'packages' { json.encode(packages) }
+		'packages' { json2.encode(packages) }
     'windows' {
       mut win_packages := []Package{}
 
@@ -22,7 +22,7 @@ pub fn (mut app App) api(mut ctx Context, request string) veb.Result {
         }
       }
 
-      json.encode(win_packages)
+      json2.encode(win_packages)
     }
     'linux' {
       mut linux_packages := []Package{}
@@ -33,7 +33,7 @@ pub fn (mut app App) api(mut ctx Context, request string) veb.Result {
         }
       }
 
-      json.encode(linux_packages)
+      json2.encode(linux_packages)
     }
     'dag' {
       mut graph := dag.new_graph()
